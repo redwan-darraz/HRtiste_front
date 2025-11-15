@@ -1,8 +1,7 @@
 import type { Candidate } from "@/types/api";
 
 // URL de base de votre API FastAPI via ngrok
-// Modifiez cette URL avec votre URL ngrok (ex: https://xxxx-xx-xx-xx-xx.ngrok-free.app)
-const API_BASE_URL = "https://unconfining-inexpensive-sharri.ngrok-free.dev/";
+const API_BASE_URL = "https://unconfining-inexpensive-sharri.ngrok-free.dev";
 
 class CandidateApiService {
   private baseUrl: string;
@@ -15,7 +14,11 @@ class CandidateApiService {
    * Récupère les candidats pour un processus spécifique
    */
   async getCandidatesForProcess(processId: number): Promise<Candidate[]> {
-    const response = await fetch(`${this.baseUrl}/processes/${processId}/candidates`);
+    const response = await fetch(`${this.baseUrl}/processes/${processId}/candidates`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Erreur lors de la récupération des candidats: ${response.statusText}`);
@@ -28,7 +31,11 @@ class CandidateApiService {
    * Recherche des candidats par nom
    */
   async searchCandidatesByName(name: string): Promise<Candidate[]> {
-    const response = await fetch(`${this.baseUrl}/candidates/search/${encodeURIComponent(name)}`);
+    const response = await fetch(`${this.baseUrl}/candidates/search/${encodeURIComponent(name)}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
+    });
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -44,7 +51,11 @@ class CandidateApiService {
    * Récupère un candidat par son ID
    */
   async getCandidateById(candidateId: number): Promise<Candidate> {
-    const response = await fetch(`${this.baseUrl}/candidates/${candidateId}`);
+    const response = await fetch(`${this.baseUrl}/candidates/${candidateId}`, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true',
+      },
+    });
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -64,6 +75,7 @@ class CandidateApiService {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify(candidate),
     });
